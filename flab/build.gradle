@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Core (Spring 5)
+    implementation 'org.springframework:spring-core:5.3.39'
+
+    // REST API
+    implementation 'org.springframework:spring-web:5.3.39'
+
+    implementation 'org.springframework:spring-webmvc:5.3.30'
+
+    // Embedded Tomcat 9
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.102'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.87'
+
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+
+    // Swagger 2
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4' // swagger와의 의존성 문제로 추가
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

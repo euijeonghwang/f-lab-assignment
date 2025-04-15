@@ -1,0 +1,34 @@
+package com.assignment.flab;
+
+import com.assignment.flab.config.AppConfig;
+import org.apache.catalina.Context;
+import org.apache.catalina.startup.Tomcat;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.ServletRegistration;
+import java.io.File;
+
+public class AppMain {
+    public static void main(String[] args) throws Exception {
+        Tomcat tomcat = new Tomcat();
+        tomcat.setPort(8080);
+        tomcat.getConnector();
+
+        String webappDirLocation = "src/main/webapp/";
+        Context ctx = tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
+
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(AppConfig.class);
+
+        // Dispatcher 등록을 명확히!
+        ctx.addServletContainerInitializer((c, servletContext) -> {
+            ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
+            dispatcher.setLoadOnStartup(1);
+            dispatcher.addMapping("/");
+        }, null);
+
+        tomcat.start();
+        tomcat.getServer().await(); // 이게 있어야 서버가 계속 살아있음!
+    }
+}
